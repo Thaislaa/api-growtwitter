@@ -21,6 +21,8 @@ model User {
 
   tweets Tweet[]
 
+  likes Like[]
+
   dtCriacao     DateTime @default(now()) @map("dt_criacao")
   dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
 
@@ -31,11 +33,13 @@ model Tweet {
   id       String @id @default(uuid())
   conteudo String @db.Text
 
-  usuarioId String  @map("usuario_id")
-  usuario   User @relation(fields: [usuarioId], references: [id])
+  usuarioId String @map("usuario_id")
+  usuario   User   @relation(fields: [usuarioId], references: [id])
 
   replies Reply[] @relation("tweet")
   replyOf Reply?  @relation("reply")
+
+  likes Like[]
 
   dtCriacao     DateTime @default(now()) @map("dt_criacao")
   dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
@@ -55,4 +59,18 @@ model Reply {
 
   @@id([tweetId, replyId])
   @@map("replies")
+}
+
+model Like {
+  userId  String @map("user_id")
+  tweetId String @map("tweet_id")
+
+  user  User  @relation(fields: [userId], references: [id])
+  tweet Tweet @relation(fields: [tweetId], references: [id])
+
+  dtCriacao     DateTime @default(now()) @map("dt_criacao")
+  dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
+
+  @@id([userId, tweetId])
+  @@map("likes")
 }
