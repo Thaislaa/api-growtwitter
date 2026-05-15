@@ -34,8 +34,25 @@ model Tweet {
   usuarioId String  @map("usuario_id")
   usuario   Usuario @relation(fields: [usuarioId], references: [id])
 
+  replies Reply[] @relation("tweet")
+  replyOf Reply?  @relation("reply")
+
   dtCriacao     DateTime @default(now()) @map("dt_criacao")
   dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
 
   @@map("tweet")
+}
+
+model Reply {
+  tweetId String @map("tweet_id")
+  replyId String @unique @map("reply_id")
+
+  tweet Tweet @relation(fields: [tweetId], references: [id], name: "tweet")
+  reply Tweet @relation(fields: [replyId], references: [id], name: "reply")
+
+  dtCriacao     DateTime @default(now()) @map("dt_criacao")
+  dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
+
+  @@id([tweetId, replyId])
+  @@map("replies")
 }
