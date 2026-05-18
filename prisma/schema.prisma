@@ -23,6 +23,12 @@ model User {
 
   likes Like[]
 
+  // usuários que EU sigo
+  following Follow[] @relation("UserFollowing")
+
+  // usuários que ME seguem
+  followers Follow[] @relation("UserFollowers")
+
   dtCriacao     DateTime @default(now()) @map("dt_criacao")
   dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
 
@@ -73,4 +79,20 @@ model Like {
 
   @@id([userId, tweetId])
   @@map("likes")
+}
+
+model Follow {
+  // quem segue
+  followerId String @map("follower_id")
+  follower   User   @relation("UserFollowing", fields: [followerId], references: [id])
+
+  // quem está sendo seguido
+  followingId String @map("following_id")
+  following   User   @relation("UserFollowers", fields: [followingId], references: [id])
+
+  dtCriacao     DateTime @default(now()) @map("dt_criacao")
+  dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
+
+  @@id([followerId, followingId])
+  @@map("follows")
 }
