@@ -6,8 +6,8 @@ export interface CreateUserDto {
 }
 
 export interface UpdateUserDto {
-    username: string
-    nome: string
-    senha: string
-    imagemUrl: string
+    username?: string
+    nome?: string
+    senha?: string
+    imagemUrl?: string
 }
