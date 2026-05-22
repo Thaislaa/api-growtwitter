@@ -6,6 +6,7 @@ import { TweetService } from "../services/tweet.service.js";
 
 export class ReplyController {
     private replyService = new ReplyService()
+    private tweetService = new TweetService()
 
     public async list(req: Request, res: Response) {
         try {
@@ -76,10 +77,8 @@ export class ReplyController {
                 })
             }
 
-            const tweetService = new TweetService()
-
-            const tweetExists = await tweetService.getById(tweetId)
-            const replyTweetExists = await tweetService.getById(replyId)
+            const tweetExists = await this.tweetService.getById(tweetId)
+            const replyTweetExists = await this.tweetService.getById(replyId)
 
             if (!tweetExists || !replyTweetExists) {
                 return res.status(404).send({
@@ -134,6 +133,8 @@ export class ReplyController {
             }
 
             const reply = await this.replyService.delete(tweetId, replyId)
+            await this.tweetService.delete(replyId)
+
             return res.status(200).send({
                 ok: true,
                 message: "Reply deletado com sucesso!",
