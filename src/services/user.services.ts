@@ -45,4 +45,14 @@ export class UserService {
 
         return user
     }
+
+    public async getByUsername(username: string) {
+        const user = await prisma.user.findUnique({
+            where: {
+                username
+            }
+        })
+
+        return user
+    }
 }
