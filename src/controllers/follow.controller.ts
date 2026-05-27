@@ -11,23 +11,23 @@ export class FollowController {
 
     public async listFollowersByUser(req: Request, res: Response) {
         try {
-            const { followingId } = req.params
+            const { userId } = req.params
 
-            if (!followingId) {
+            if (!userId) {
                 return res.status(400).send({
                     ok: false,
                     message: "Informe o id do usuário."
                 })
             }
 
-            if (!isValidId(followingId)) {
+            if (!isValidId(userId)) {
                 return res.status(400).send({
                     ok: false,
                     message: "Id informado é inválido."
                 })
             }
 
-            const user = await this.userService.getById(followingId)
+            const user = await this.userService.getById(userId)
 
             if (!user) {
                 return res.status(404).send({
@@ -36,7 +36,7 @@ export class FollowController {
                 })
             }
 
-            const usersFollowers = await this.followService.listFollowersByUser(followingId)
+            const usersFollowers = await this.followService.listFollowersByUser(userId)
 
             return res.status(200).send({
                 ok: true,
@@ -50,23 +50,23 @@ export class FollowController {
 
     public async listFollowingByUser(req: Request, res: Response) {
         try {
-            const { followerId } = req.params
+            const { userId } = req.params
 
-            if (!followerId) {
+            if (!userId) {
                 return res.status(400).send({
                     ok: false,
                     message: "Informe o id do usuário."
                 })
             }
 
-            if (!isValidId(followerId)) {
+            if (!isValidId(userId)) {
                 return res.status(400).send({
                     ok: false,
                     message: "Id informado é inválido."
                 })
             }
 
-            const user = await this.userService.getById(followerId)
+            const user = await this.userService.getById(userId)
 
             if (!user) {
                 return res.status(404).send({
@@ -75,7 +75,7 @@ export class FollowController {
                 })
             }
 
-            const usersFollowing = await this.followService.listFollowingByUser(followerId)
+            const usersFollowing = await this.followService.listFollowingByUser(userId)
 
             return res.status(200).send({
                 ok: true,
