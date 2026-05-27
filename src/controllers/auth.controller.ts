@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { UserService } from "../services/user.services.js"
 import { handleError } from "../utils/handle.error.js"
+import jwt from "jsonwebtoken"
 
 export class AuthController {
     private userService = new UserService();
@@ -32,14 +33,19 @@ export class AuthController {
                 })
             }
 
+            const token = jwt.sign(
+                {
+                    id: user.id,
+                    username: user.username
+                },
+                "senha"
+            )
+
             return res.status(200).send({
                 ok: true,
                 message: "Login realizado com sucesso!",
                 data: {
-                    id: user.id,
-                    username: user.username,
-                    nome: user.nome,
-                    imagemUrl: user.imagemUrl
+                    token
                 }
             })
         } catch (error) {

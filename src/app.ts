@@ -4,6 +4,7 @@ import { tweetRoutes } from "./routes/tweet.routes.js";
 import { replyRoutes } from "./routes/reply.routes.js";
 import { likeRoutes } from "./routes/like.routes.js";
 import { followRoutes } from "./routes/follow.routes.js";
+import { authRoutes } from "./routes/auth.routes.js";
 
 const app = express();
 
@@ -14,5 +15,6 @@ app.use(tweetRoutes)
 app.use(replyRoutes)
 app.use(likeRoutes)
 app.use(followRoutes)
+app.use(authRoutes)
 
 export { app }

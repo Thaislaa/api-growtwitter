@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { FollowController } from "../controllers/follow.controller.js";
+import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 const followRoutes = Router()
 const followController = new FollowController()
@@ -10,8 +11,8 @@ followRoutes.get("/follow/following/:userId", followController.listFollowingByUs
 
 followRoutes.get("/follow/:followerId/:followingId", followController.getById.bind(followController))
 
-followRoutes.post("/follow", followController.create.bind(followController))
+followRoutes.post("/follow", authMiddleware, followController.create.bind(followController))
 
-followRoutes.delete("/follow/:followerId/:followingId", followController.delete.bind(followController))
+followRoutes.delete("/follow/:followerId/:followingId", authMiddleware, followController.delete.bind(followController))
 
 export { followRoutes }
