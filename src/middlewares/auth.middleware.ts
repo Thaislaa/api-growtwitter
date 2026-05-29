@@ -14,7 +14,9 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
 
         const token = authorization.split(" ")[1] as string
 
-        jwt.verify(token, "senha")
+        const decoded = jwt.verify(token, "senha") as jwt.JwtPayload
+
+        req.body.userId = decoded.id
 
         next()
     } catch (error) {

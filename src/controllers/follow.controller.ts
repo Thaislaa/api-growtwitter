@@ -126,23 +126,23 @@ export class FollowController {
 
     public async create(req: Request, res: Response) {
         try {
-            const { followerId, followingId } = req.body
+            const { userId, followingId } = req.body
 
-            if (!followerId || !followingId) {
+            if (!userId || !followingId) {
                 return res.status(400).send({
                     ok: false,
                     message: "Informe todos os campos."
                 })
             }
 
-            if (!isValidId(followerId) || !isValidId(followingId)) {
+            if (!isValidId(userId) || !isValidId(followingId)) {
                 return res.status(400).send({
                     ok: false,
                     message: "Um dos ids informado é inválido."
                 })
             }
 
-            const followerExists = await this.userService.getById(followerId)
+            const followerExists = await this.userService.getById(userId)
             if (!followerExists) {
                 return res.status(404).send({
                     ok: false,
@@ -158,7 +158,7 @@ export class FollowController {
                 })
             }
 
-            const exists = await this.followService.getById(followerId, followingId)
+            const exists = await this.followService.getById(userId, followingId)
             if (exists) {
                 return res.status(400).send({
                     ok: false,
@@ -166,14 +166,14 @@ export class FollowController {
                 })
             }
 
-            if (followerId === followingId) {
+            if (userId === followingId) {
                 return res.status(400).send({
                     ok: false,
                     message: "Usuário não pode seguir a si mesmo."
                 })
             }
 
-            const follow = await this.followService.create({ followerId, followingId })
+            const follow = await this.followService.create({ followerId: userId, followingId })
             return res.status(201).send({
                 ok: true,
                 message: "Follow realizado com sucesso!",
