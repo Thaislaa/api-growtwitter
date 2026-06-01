@@ -5,6 +5,8 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
     try {
         const authorization = req.headers.authorization
 
+        console.log("AUTH:", authorization)
+
         if (!authorization) {
             return res.status(401).send({
                 ok: false,
@@ -14,12 +16,18 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
 
         const token = authorization.split(" ")[1] as string
 
+        console.log("TOKEN:", token)
+
         const decoded = jwt.verify(token, "senha") as jwt.JwtPayload
 
-        req.body.userId = decoded.id
+        console.log("DECODED:", decoded)
+
+        req.userId = decoded.id
 
         next()
     } catch (error) {
+        console.log("ERRO JWT:", error)
+
         return res.status(401).send({
             ok: false,
             message: "Token inválido."

@@ -80,16 +80,16 @@ export class UserController {
 
     public async update(req: Request, res: Response) {
         try {
-            const { id } = req.params
+            const userId = req.userId
 
-            if (!isValidId(id)) {
+            if (!isValidId(userId)) {
                 return res.status(400).send({
                     ok: false,
                     message: "Id informado é inválido."
                 })
             }
 
-            const userExists = await this.userService.getById(id)
+            const userExists = await this.userService.getById(userId)
             if (!userExists) {
                 return res.status(404).send({
                     ok: false,
@@ -106,7 +106,7 @@ export class UserController {
                 })
             }
 
-            const user = await this.userService.update(id, {
+            const user = await this.userService.update(userId, {
                 username,
                 nome,
                 senha,
@@ -125,16 +125,16 @@ export class UserController {
 
     public async delete(req: Request, res: Response) {
         try {
-            const { id } = req.params
+            const userId = req.userId
 
-            if (!isValidId(id)) {
+            if (!isValidId(userId)) {
                 return res.status(400).send({
                     ok: false,
                     message: "Id informado é inválido."
                 })
             }
 
-            const userExists = await this.userService.getById(id)
+            const userExists = await this.userService.getById(userId)
             if (!userExists) {
                 return res.status(404).send({
                     ok: false,
@@ -142,7 +142,7 @@ export class UserController {
                 })
             }
 
-            const user = await this.userService.delete(id)
+            const user = await this.userService.delete(userId)
 
             return res.status(200).send({
                 ok: true,
