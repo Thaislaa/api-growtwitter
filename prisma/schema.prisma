@@ -40,7 +40,7 @@ model Tweet {
   conteudo String @db.Text
 
   usuarioId String @map("usuario_id")
-  usuario   User   @relation(fields: [usuarioId], references: [id])
+  usuario   User   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
 
   replies Reply[] @relation("tweet")
   replyOf Reply?  @relation("reply")
@@ -57,8 +57,8 @@ model Reply {
   tweetId String @map("tweet_id")
   replyId String @unique @map("reply_id")
 
-  tweet Tweet @relation(fields: [tweetId], references: [id], name: "tweet")
-  reply Tweet @relation(fields: [replyId], references: [id], name: "reply")
+  tweet Tweet @relation(fields: [tweetId], references: [id], name: "tweet", onDelete: Cascade)
+  reply Tweet @relation(fields: [replyId], references: [id], name: "reply", onDelete: Cascade)
 
   dtCriacao     DateTime @default(now()) @map("dt_criacao")
   dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
@@ -71,8 +71,8 @@ model Like {
   userId  String @map("user_id")
   tweetId String @map("tweet_id")
 
-  user  User  @relation(fields: [userId], references: [id])
-  tweet Tweet @relation(fields: [tweetId], references: [id])
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tweet Tweet @relation(fields: [tweetId], references: [id], onDelete: Cascade)
 
   dtCriacao     DateTime @default(now()) @map("dt_criacao")
   dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
@@ -84,11 +84,11 @@ model Like {
 model Follow {
   // quem segue
   followerId String @map("follower_id")
-  follower   User   @relation("UserFollowing", fields: [followerId], references: [id])
+  follower   User   @relation("UserFollowing", fields: [followerId], references: [id], onDelete: Cascade)
 
   // quem está sendo seguido
   followingId String @map("following_id")
-  following   User   @relation("UserFollowers", fields: [followingId], references: [id])
+  following   User   @relation("UserFollowers", fields: [followingId], references: [id], onDelete: Cascade)
 
   dtCriacao     DateTime @default(now()) @map("dt_criacao")
   dtAtualizacao DateTime @updatedAt @map("dt_atualizacao")
