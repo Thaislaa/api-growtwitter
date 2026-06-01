@@ -11,6 +11,6 @@ likeRoutes.get("/likes/:userId/:tweetId", likeController.getById.bind(likeContro
 
 likeRoutes.post("/likes", authMiddleware, likeController.create.bind(likeController))
 
-likeRoutes.delete("/likes/:userId/:tweetId", authMiddleware, likeController.delete.bind(likeController))
+likeRoutes.delete("/likes/:tweetId", authMiddleware, likeController.delete.bind(likeController))
 
 export { likeRoutes }

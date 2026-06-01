@@ -103,9 +103,10 @@ export class LikeController {
 
     public async create(req: Request, res: Response) {
         try {
-            const { userId, tweetId } = req.body
+            const { tweetId } = req.body
+            const userId = req.userId
 
-            if (!userId || !tweetId) {
+            if (!tweetId) {
                 return res.status(400).send({
                     ok: false,
                     message: "Informe todos os campos."
@@ -159,7 +160,8 @@ export class LikeController {
 
     public async delete(req: Request, res: Response) {
         try {
-            const { userId, tweetId } = req.params
+            const { tweetId } = req.params
+            const userId = req.userId
 
             if (!userId || !tweetId) {
                 return res.status(400).send({
@@ -192,6 +194,13 @@ export class LikeController {
             }
 
             const likeExists = await this.likeService.getById(userId, tweetId)
+
+            if (likeExists?.userId !== userId) {
+                return res.status(403).send({
+                    ok: false,
+                    message: "Você não tem permissão para descurtir esse tweet."
+                })
+            }
 
             if (!likeExists) {
                 return res.status(404).send({
