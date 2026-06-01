@@ -62,6 +62,7 @@ export class ReplyController {
     public async create(req: Request, res: Response) {
         try {
             const { tweetId, replyId } = req.body
+            const userId = req.userId
 
             if (!tweetId || !replyId) {
                 return res.status(400).send({
@@ -87,11 +88,10 @@ export class ReplyController {
                 })
             }
 
-            const replyExists = await this.replyService.getById(tweetId, replyId)
-            if (replyExists) {
-                return res.status(409).send({
+            if (replyTweetExists.usuarioId !== userId) {
+                return res.status(403).send({
                     ok: false,
-                    message: "Reply já existe."
+                    message: "Você não tem premissão para criar essa resposta."
                 })
             }
 
@@ -109,6 +109,7 @@ export class ReplyController {
     public async delete(req: Request, res: Response) {
         try {
             const { tweetId, replyId } = req.params
+            const userId = req.userId
 
             if (!tweetId || !replyId) {
                 return res.status(400).send({
@@ -129,6 +130,13 @@ export class ReplyController {
                 return res.status(404).send({
                     ok: false,
                     message: "Reply não encontrado."
+                })
+            }
+
+            if (replyExists.reply.usuarioId !== userId) {
+                return res.status(403).send({
+                    ok: false,
+                    message: "Você não tem permissão para excluir esse reply."
                 })
             }
 
