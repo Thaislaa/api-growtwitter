@@ -54,9 +54,10 @@ export class TweetController {
 
     public async create(req: Request, res: Response) {
         try {
-            const { usuarioId, conteudo } = req.body
+            const { conteudo } = req.body
+            const userId = req.userId
 
-            if (!usuarioId || !conteudo) {
+            if (!userId || !conteudo) {
                 return res.status(400).send({
                     ok: false,
                     message: "Informe todos os campos."
@@ -64,7 +65,7 @@ export class TweetController {
             }
 
             const userService = new UserService();
-            const userExists = await userService.getById(usuarioId)
+            const userExists = await userService.getById(userId)
             if (!userExists) {
                 return res.status(404).send({
                     ok: false,
@@ -73,7 +74,8 @@ export class TweetController {
             }
 
             const tweet = await this.tweetService.create({
-                usuarioId, conteudo
+                usuarioId: userId,
+                conteudo
             })
 
             return res.status(201).send({
@@ -90,6 +92,7 @@ export class TweetController {
         try {
             const { id } = req.params
             const { conteudo } = req.body
+            const userId = req.userId
 
             if (!isValidId(id)) {
                 return res.status(400).send({
@@ -113,6 +116,13 @@ export class TweetController {
                 })
             }
 
+            if (tweetExists.usuarioId !== userId) {
+                return res.status(403).send({
+                    ok: false,
+                    message: "Você não tem permissão para editar este tweet."
+                })
+            }
+
             const tweet = await this.tweetService.update(id, {
                 conteudo
             })
@@ -130,6 +140,7 @@ export class TweetController {
     public async delete(req: Request, res: Response) {
         try {
             const { id } = req.params
+            const userId = req.userId
 
             if (!isValidId(id)) {
                 return res.status(400).send({
@@ -143,6 +154,13 @@ export class TweetController {
                 return res.status(404).send({
                     ok: false,
                     message: "Tweet não encontrado."
+                })
+            }
+
+            if (tweetExists.usuarioId !== userId) {
+                return res.status(403).send({
+                    ok: false,
+                    message: "Você não tem permissão para excluir este tweet."
                 })
             }
 
