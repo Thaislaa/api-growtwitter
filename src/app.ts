@@ -5,6 +5,7 @@ import { replyRoutes } from "./routes/reply.routes.js";
 import { likeRoutes } from "./routes/like.routes.js";
 import { followRoutes } from "./routes/follow.routes.js";
 import { authRoutes } from "./routes/auth.routes.js";
+import { feedRoutes } from "./routes/feed.routes.js";
 
 const app = express();
 
@@ -16,5 +17,6 @@ app.use(replyRoutes)
 app.use(likeRoutes)
 app.use(followRoutes)
 app.use(authRoutes)
+app.use(feedRoutes)
 
 export { app }
