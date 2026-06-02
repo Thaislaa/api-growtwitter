@@ -12,7 +12,7 @@ export class FeedService {
         const feed = tweets.filter(tweet => {
             return (
                 tweet.usuarioId === id ||
-                following.some(follow => follow.followerId === tweet.usuarioId)
+                following.some(follow => follow.followingId === tweet.usuarioId)
             )
         })
 
