@@ -13,6 +13,6 @@ followRoutes.get("/follow/:followerId/:followingId", followController.getById.bi
 
 followRoutes.post("/follow", authMiddleware, followController.create.bind(followController))
 
-followRoutes.delete("/follow/:followerId/:followingId", authMiddleware, followController.delete.bind(followController))
+followRoutes.delete("/follow/:followingId", authMiddleware, followController.delete.bind(followController))
 
 export { followRoutes }

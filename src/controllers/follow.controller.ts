@@ -126,7 +126,8 @@ export class FollowController {
 
     public async create(req: Request, res: Response) {
         try {
-            const { userId, followingId } = req.body
+            const { followingId } = req.body
+            const userId = req.userId
 
             if (!userId || !followingId) {
                 return res.status(400).send({
@@ -186,7 +187,8 @@ export class FollowController {
 
     public async delete(req: Request, res: Response) {
         try {
-            const { followerId, followingId } = req.params
+            const { followingId } = req.params
+            const followerId = req.userId
 
             if (!followerId || !followingId) {
                 return res.status(400).send({
