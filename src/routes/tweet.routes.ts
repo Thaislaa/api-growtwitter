@@ -6,9 +6,9 @@ const tweetRoutes = Router()
 
 const tweetController = new TweetController()
 
-tweetRoutes.get("/tweets", tweetController.list.bind(tweetController))
+tweetRoutes.get("/tweets", authMiddleware, tweetController.list.bind(tweetController))
 
-tweetRoutes.get("/tweets/:id", tweetController.getById.bind(tweetController))
+tweetRoutes.get("/tweets/:id", authMiddleware, tweetController.getById.bind(tweetController))
 
 tweetRoutes.post("/tweets", authMiddleware, tweetController.create.bind(tweetController))
 
