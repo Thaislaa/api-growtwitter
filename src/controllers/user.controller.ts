@@ -22,16 +22,16 @@ export class UserController {
 
     public async getById(req: Request, res: Response) {
         try {
-            const { id } = req.params
+            const userId = req.userId
 
-            if (!isValidId(id)) {
+            if (!isValidId(userId)) {
                 return res.status(400).send({
                     ok: false,
                     message: "Id informado é inválido."
                 })
             }
 
-            const user = await this.userService.getById(id)
+            const user = await this.userService.getById(userId)
 
             if (!user) {
                 return res.status(404).send({

@@ -6,9 +6,9 @@ const userRoutes = Router();
 
 const userController = new UserController();
 
-userRoutes.get("/users", userController.list.bind(userController));
+userRoutes.get("/users", authMiddleware, userController.list.bind(userController));
 
-userRoutes.get("/users/:id", userController.getById.bind(userController))
+userRoutes.get("/users/me", authMiddleware, userController.getById.bind(userController))
 
 userRoutes.post("/users", userController.create.bind(userController));
 
